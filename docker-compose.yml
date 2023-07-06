@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   server:
     build:
@@ -28,7 +28,7 @@ services:
       db:
         condition: service_healthy
   db:
-    image: postgres:12
+    image: postgres:latest
     ports:
       - ${DB_PORT}:5432
     environment:

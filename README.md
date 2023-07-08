@@ -45,7 +45,7 @@ $ npm run db:init
 
 ```shell
 # start the server component
-$ npm run install
+$ npm run start
 ```
 
 ## Step 2.2: Scripts - container based development

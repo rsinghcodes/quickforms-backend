@@ -1,21 +1,14 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { QueryMode } from "./QueryMode";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional } from "class-validator";
-import { Type } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsOptional } from 'class-validator';
+import { QueryMode } from './QueryMode';
 
-@InputType({
-  isAbstract: true,
-})
 export class StringFilter {
   @ApiProperty({
     required: false,
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   equals?: string;
 
@@ -24,9 +17,6 @@ export class StringFilter {
     type: [String],
   })
   @IsOptional()
-  @Field(() => [String], {
-    nullable: true,
-  })
   @Type(() => String)
   in?: string[];
 
@@ -35,9 +25,6 @@ export class StringFilter {
     type: [String],
   })
   @IsOptional()
-  @Field(() => [String], {
-    nullable: true,
-  })
   @Type(() => String)
   notIn?: string[];
 
@@ -46,9 +33,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   lt?: string;
 
@@ -57,9 +41,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   lte?: string;
 
@@ -68,9 +49,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   gt?: string;
 
@@ -79,9 +57,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   gte?: string;
 
@@ -90,9 +65,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   contains?: string;
 
@@ -101,9 +73,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   startsWith?: string;
 
@@ -112,20 +81,14 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   endsWith?: string;
 
   @ApiProperty({
     required: false,
-    enum: ["Default", "Insensitive"],
+    enum: ['Default', 'Insensitive'],
   })
   @IsOptional()
-  @Field(() => QueryMode, {
-    nullable: true,
-  })
   mode?: QueryMode;
 
   @ApiProperty({
@@ -133,9 +96,6 @@ export class StringFilter {
     type: String,
   })
   @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
   @Type(() => String)
   not?: string;
 }

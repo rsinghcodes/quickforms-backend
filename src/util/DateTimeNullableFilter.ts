@@ -1,20 +1,13 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional } from "class-validator";
-import { Type } from "class-transformer";
-@InputType({
-  isAbstract: true,
-  description: undefined,
-})
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsOptional } from 'class-validator';
+
 export class DateTimeNullableFilter {
   @ApiProperty({
     required: false,
     type: Date,
   })
   @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
   @Type(() => Date)
   equals?: Date | null;
 
@@ -23,9 +16,6 @@ export class DateTimeNullableFilter {
     type: [Date],
   })
   @IsOptional()
-  @Field(() => [Date], {
-    nullable: true,
-  })
   @Type(() => Date)
   in?: Date[] | null;
 
@@ -34,9 +24,6 @@ export class DateTimeNullableFilter {
     type: [Date],
   })
   @IsOptional()
-  @Field(() => [Date], {
-    nullable: true,
-  })
   @Type(() => Date)
   notIn?: Date[] | null;
 
@@ -45,9 +32,6 @@ export class DateTimeNullableFilter {
     type: Date,
   })
   @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
   @Type(() => Date)
   lt?: Date;
 
@@ -56,9 +40,6 @@ export class DateTimeNullableFilter {
     type: Date,
   })
   @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
   @Type(() => Date)
   lte?: Date;
 
@@ -67,9 +48,6 @@ export class DateTimeNullableFilter {
     type: Date,
   })
   @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
   @Type(() => Date)
   gt?: Date;
 
@@ -78,9 +56,6 @@ export class DateTimeNullableFilter {
     type: Date,
   })
   @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
   @Type(() => Date)
   gte?: Date;
 
@@ -89,9 +64,6 @@ export class DateTimeNullableFilter {
     type: Date,
   })
   @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
   @Type(() => Date)
   not?: Date;
 }

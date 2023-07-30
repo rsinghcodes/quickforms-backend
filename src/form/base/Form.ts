@@ -1,11 +1,10 @@
-import { IsJSONValue } from '@app/custom-validators';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsDate, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { JsonValue } from 'type-fest';
+import { Question } from '../../question/base/Question';
 import { Submission } from '../../submission/base/Submission';
 
-class User {
+class Form {
   @ApiProperty({
     required: true,
   })
@@ -19,7 +18,7 @@ class User {
   })
   @IsString()
   @IsOptional()
-  firstName!: string | null;
+  description!: string | null;
 
   @ApiProperty({
     required: true,
@@ -29,18 +28,13 @@ class User {
   id!: string;
 
   @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  lastName!: string | null;
-
-  @ApiProperty({
     required: true,
+    type: () => [Question],
   })
-  @IsJSONValue()
-  roles!: JsonValue;
+  @ValidateNested()
+  @Type(() => Question)
+  @IsOptional()
+  questions?: Array<Question>;
 
   @ApiProperty({
     required: false,
@@ -53,17 +47,17 @@ class User {
 
   @ApiProperty({
     required: true,
+    type: String,
+  })
+  @IsString()
+  title!: string;
+
+  @ApiProperty({
+    required: true,
   })
   @IsDate()
   @Type(() => Date)
   updatedAt!: Date;
-
-  @ApiProperty({
-    required: true,
-    type: String,
-  })
-  @IsString()
-  username!: string;
 }
 
-export { User as User };
+export { Form as Form };

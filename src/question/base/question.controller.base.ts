@@ -18,105 +18,122 @@ import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
 import * as nestAccessControl from "nest-access-control";
 import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
-import { UserService } from "../user.service";
+import { QuestionService } from "../question.service";
 import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { UserCreateInput } from "./UserCreateInput";
-import { UserWhereInput } from "./UserWhereInput";
-import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
-import { UserFindManyArgs } from "./UserFindManyArgs";
-import { UserUpdateInput } from "./UserUpdateInput";
-import { User } from "./User";
-import { SubmissionFindManyArgs } from "../../submission/base/SubmissionFindManyArgs";
-import { Submission } from "../../submission/base/Submission";
-import { SubmissionWhereUniqueInput } from "../../submission/base/SubmissionWhereUniqueInput";
+import { Public } from "../../decorators/public.decorator";
+import { QuestionCreateInput } from "./QuestionCreateInput";
+import { QuestionWhereInput } from "./QuestionWhereInput";
+import { QuestionWhereUniqueInput } from "./QuestionWhereUniqueInput";
+import { QuestionFindManyArgs } from "./QuestionFindManyArgs";
+import { QuestionUpdateInput } from "./QuestionUpdateInput";
+import { Question } from "./Question";
+import { AnswerFindManyArgs } from "../../answer/base/AnswerFindManyArgs";
+import { Answer } from "../../answer/base/Answer";
+import { AnswerWhereUniqueInput } from "../../answer/base/AnswerWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
-export class UserControllerBase {
+export class QuestionControllerBase {
   constructor(
-    protected readonly service: UserService,
+    protected readonly service: QuestionService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
   @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
-  @swagger.ApiCreatedResponse({ type: User })
+  @swagger.ApiCreatedResponse({ type: Question })
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "create",
     possession: "any",
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async create(@common.Body() data: UserCreateInput): Promise<User> {
+  async create(@common.Body() data: QuestionCreateInput): Promise<Question> {
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        form: {
+          connect: data.form,
+        },
+      },
       select: {
-        createdAt: true,
-        firstName: true,
+        dropdownOptions: true,
+
+        form: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
-        lastName: true,
-        roles: true,
-        updatedAt: true,
-        username: true,
+        label: true,
+        options: true,
+        questionType: true,
       },
     });
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
-  @swagger.ApiOkResponse({ type: [User] })
-  @ApiNestedQuery(UserFindManyArgs)
+  @swagger.ApiOkResponse({ type: [Question] })
+  @ApiNestedQuery(QuestionFindManyArgs)
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "read",
     possession: "any",
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async findMany(@common.Req() request: Request): Promise<User[]> {
-    const args = plainToClass(UserFindManyArgs, request.query);
+  async findMany(@common.Req() request: Request): Promise<Question[]> {
+    const args = plainToClass(QuestionFindManyArgs, request.query);
     return this.service.findMany({
       ...args,
       select: {
-        createdAt: true,
-        firstName: true,
+        dropdownOptions: true,
+
+        form: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
-        lastName: true,
-        roles: true,
-        updatedAt: true,
-        username: true,
+        label: true,
+        options: true,
+        questionType: true,
       },
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @Public()
   @common.Get("/:id")
-  @swagger.ApiOkResponse({ type: User })
+  @swagger.ApiOkResponse({ type: Question })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "read",
-    possession: "own",
-  })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
   async findOne(
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<User | null> {
+    @common.Param() params: QuestionWhereUniqueInput
+  ): Promise<Question | null> {
     const result = await this.service.findOne({
       where: params,
       select: {
-        createdAt: true,
-        firstName: true,
+        dropdownOptions: true,
+
+        form: {
+          select: {
+            id: true,
+          },
+        },
+
         id: true,
-        lastName: true,
-        roles: true,
-        updatedAt: true,
-        username: true,
+        label: true,
+        options: true,
+        questionType: true,
       },
     });
     if (result === null) {
@@ -129,10 +146,10 @@ export class UserControllerBase {
 
   @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
-  @swagger.ApiOkResponse({ type: User })
+  @swagger.ApiOkResponse({ type: Question })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "update",
     possession: "any",
   })
@@ -140,21 +157,32 @@ export class UserControllerBase {
     type: errors.ForbiddenException,
   })
   async update(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() data: UserUpdateInput
-  ): Promise<User | null> {
+    @common.Param() params: QuestionWhereUniqueInput,
+    @common.Body() data: QuestionUpdateInput
+  ): Promise<Question | null> {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          form: {
+            connect: data.form,
+          },
+        },
         select: {
-          createdAt: true,
-          firstName: true,
+          dropdownOptions: true,
+
+          form: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
-          lastName: true,
-          roles: true,
-          updatedAt: true,
-          username: true,
+          label: true,
+          options: true,
+          questionType: true,
         },
       });
     } catch (error) {
@@ -168,10 +196,10 @@ export class UserControllerBase {
   }
 
   @common.Delete("/:id")
-  @swagger.ApiOkResponse({ type: User })
+  @swagger.ApiOkResponse({ type: Question })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "delete",
     possession: "any",
   })
@@ -179,19 +207,24 @@ export class UserControllerBase {
     type: errors.ForbiddenException,
   })
   async delete(
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<User | null> {
+    @common.Param() params: QuestionWhereUniqueInput
+  ): Promise<Question | null> {
     try {
       return await this.service.delete({
         where: params,
         select: {
-          createdAt: true,
-          firstName: true,
+          dropdownOptions: true,
+
+          form: {
+            select: {
+              id: true,
+            },
+          },
+
           id: true,
-          lastName: true,
-          roles: true,
-          updatedAt: true,
-          username: true,
+          label: true,
+          options: true,
+          questionType: true,
         },
       });
     } catch (error) {
@@ -205,36 +238,36 @@ export class UserControllerBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/submissions")
-  @ApiNestedQuery(SubmissionFindManyArgs)
+  @common.Get("/:id/answers")
+  @ApiNestedQuery(AnswerFindManyArgs)
   @nestAccessControl.UseRoles({
-    resource: "Submission",
+    resource: "Answer",
     action: "read",
     possession: "any",
   })
-  async findManySubmissions(
+  async findManyAnswers(
     @common.Req() request: Request,
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<Submission[]> {
-    const query = plainToClass(SubmissionFindManyArgs, request.query);
-    const results = await this.service.findSubmissions(params.id, {
+    @common.Param() params: QuestionWhereUniqueInput
+  ): Promise<Answer[]> {
+    const query = plainToClass(AnswerFindManyArgs, request.query);
+    const results = await this.service.findAnswers(params.id, {
       ...query,
       select: {
-        createdAt: true,
-
-        form: {
-          select: {
-            id: true,
-          },
-        },
-
         id: true,
 
-        user: {
+        question: {
           select: {
             id: true,
           },
         },
+
+        submission: {
+          select: {
+            id: true,
+          },
+        },
+
+        value: true,
       },
     });
     if (results === null) {
@@ -245,18 +278,18 @@ export class UserControllerBase {
     return results;
   }
 
-  @common.Post("/:id/submissions")
+  @common.Post("/:id/answers")
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "update",
     possession: "any",
   })
-  async connectSubmissions(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: SubmissionWhereUniqueInput[]
+  async connectAnswers(
+    @common.Param() params: QuestionWhereUniqueInput,
+    @common.Body() body: AnswerWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      submissions: {
+      answers: {
         connect: body,
       },
     };
@@ -267,18 +300,18 @@ export class UserControllerBase {
     });
   }
 
-  @common.Patch("/:id/submissions")
+  @common.Patch("/:id/answers")
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "update",
     possession: "any",
   })
-  async updateSubmissions(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: SubmissionWhereUniqueInput[]
+  async updateAnswers(
+    @common.Param() params: QuestionWhereUniqueInput,
+    @common.Body() body: AnswerWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      submissions: {
+      answers: {
         set: body,
       },
     };
@@ -289,18 +322,18 @@ export class UserControllerBase {
     });
   }
 
-  @common.Delete("/:id/submissions")
+  @common.Delete("/:id/answers")
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Question",
     action: "update",
     possession: "any",
   })
-  async disconnectSubmissions(
-    @common.Param() params: UserWhereUniqueInput,
-    @common.Body() body: SubmissionWhereUniqueInput[]
+  async disconnectAnswers(
+    @common.Param() params: QuestionWhereUniqueInput,
+    @common.Body() body: AnswerWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      submissions: {
+      answers: {
         disconnect: body,
       },
     };

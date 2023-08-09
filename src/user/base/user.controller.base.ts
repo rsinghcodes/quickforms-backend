@@ -9,24 +9,23 @@ https://docs.amplication.com/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-import * as common from "@nestjs/common";
-import * as swagger from "@nestjs/swagger";
-import { isRecordNotFoundError } from "../../prisma.util";
-import * as errors from "../../errors";
-import { Request } from "express";
-import { plainToClass } from "class-transformer";
-import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
-import * as nestAccessControl from "nest-access-control";
-import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
-import { UserService } from "../user.service";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { UserCreateInput } from "./UserCreateInput";
-import { UserWhereInput } from "./UserWhereInput";
-import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
-import { UserFindManyArgs } from "./UserFindManyArgs";
-import { UserUpdateInput } from "./UserUpdateInput";
-import { User } from "./User";
+import * as common from '@nestjs/common';
+import * as swagger from '@nestjs/swagger';
+import { plainToClass } from 'class-transformer';
+import { Request } from 'express';
+import * as nestAccessControl from 'nest-access-control';
+import * as defaultAuthGuard from '../../auth/defaultAuth.guard';
+import { ApiNestedQuery } from '../../decorators/api-nested-query.decorator';
+import * as errors from '../../errors';
+import { AclFilterResponseInterceptor } from '../../interceptors/aclFilterResponse.interceptor';
+import { AclValidateRequestInterceptor } from '../../interceptors/aclValidateRequest.interceptor';
+import { isRecordNotFoundError } from '../../prisma.util';
+import { UserService } from '../user.service';
+import { User } from './User';
+import { UserCreateInput } from './UserCreateInput';
+import { UserFindManyArgs } from './UserFindManyArgs';
+import { UserUpdateInput } from './UserUpdateInput';
+import { UserWhereUniqueInput } from './UserWhereUniqueInput';
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -39,9 +38,9 @@ export class UserControllerBase {
   @common.Post()
   @swagger.ApiCreatedResponse({ type: User })
   @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "create",
-    possession: "any",
+    resource: 'User',
+    action: 'create',
+    possession: 'any',
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
@@ -66,9 +65,9 @@ export class UserControllerBase {
   @swagger.ApiOkResponse({ type: [User] })
   @ApiNestedQuery(UserFindManyArgs)
   @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "read",
-    possession: "any",
+    resource: 'User',
+    action: 'read',
+    possession: 'any',
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
@@ -90,20 +89,18 @@ export class UserControllerBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id")
+  @common.Get('/:id')
   @swagger.ApiOkResponse({ type: User })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "read",
-    possession: "own",
+    resource: 'User',
+    action: 'read',
+    possession: 'own',
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async findOne(
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<User | null> {
+  async findOne(@common.Param() params: UserWhereUniqueInput): Promise<User | null> {
     const result = await this.service.findOne({
       where: params,
       select: {
@@ -117,21 +114,19 @@ export class UserControllerBase {
       },
     });
     if (result === null) {
-      throw new errors.NotFoundException(
-        `No resource was found for ${JSON.stringify(params)}`
-      );
+      throw new errors.NotFoundException(`No resource was found for ${JSON.stringify(params)}`);
     }
     return result;
   }
 
   @common.UseInterceptors(AclValidateRequestInterceptor)
-  @common.Patch("/:id")
+  @common.Patch('/:id')
   @swagger.ApiOkResponse({ type: User })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "update",
-    possession: "any",
+    resource: 'User',
+    action: 'update',
+    possession: 'any',
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
@@ -154,30 +149,26 @@ export class UserControllerBase {
           username: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (isRecordNotFoundError(error)) {
-        throw new errors.NotFoundException(
-          `No resource was found for ${JSON.stringify(params)}`
-        );
+        throw new errors.NotFoundException(`No resource was found for ${JSON.stringify(params)}`);
       }
       throw error;
     }
   }
 
-  @common.Delete("/:id")
+  @common.Delete('/:id')
   @swagger.ApiOkResponse({ type: User })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
   @nestAccessControl.UseRoles({
-    resource: "User",
-    action: "delete",
-    possession: "any",
+    resource: 'User',
+    action: 'delete',
+    possession: 'any',
   })
   @swagger.ApiForbiddenResponse({
     type: errors.ForbiddenException,
   })
-  async delete(
-    @common.Param() params: UserWhereUniqueInput
-  ): Promise<User | null> {
+  async delete(@common.Param() params: UserWhereUniqueInput): Promise<User | null> {
     try {
       return await this.service.delete({
         where: params,
@@ -191,11 +182,9 @@ export class UserControllerBase {
           username: true,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       if (isRecordNotFoundError(error)) {
-        throw new errors.NotFoundException(
-          `No resource was found for ${JSON.stringify(params)}`
-        );
+        throw new errors.NotFoundException(`No resource was found for ${JSON.stringify(params)}`);
       }
       throw error;
     }

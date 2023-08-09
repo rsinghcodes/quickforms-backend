@@ -1,21 +1,13 @@
-import { Field, InputType, Float } from "@nestjs/graphql";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional } from "class-validator";
-import { Type } from "class-transformer";
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 
-@InputType({
-  isAbstract: true,
-  description: undefined,
-})
 export class FloatNullableFilter {
   @ApiProperty({
     required: false,
     type: Number,
   })
   @IsOptional()
-  @Field(() => Float, {
-    nullable: true,
-  })
   @Type(() => Number)
   equals?: number | null;
 
@@ -24,9 +16,6 @@ export class FloatNullableFilter {
     type: [Number],
   })
   @IsOptional()
-  @Field(() => [Float], {
-    nullable: true,
-  })
   @Type(() => Number)
   in?: number[] | null;
 
@@ -35,9 +24,6 @@ export class FloatNullableFilter {
     type: [Number],
   })
   @IsOptional()
-  @Field(() => [Float], {
-    nullable: true,
-  })
   @Type(() => Number)
   notIn?: number[] | null;
 
@@ -46,9 +32,6 @@ export class FloatNullableFilter {
     type: Number,
   })
   @IsOptional()
-  @Field(() => Float, {
-    nullable: true,
-  })
   @Type(() => Number)
   lt?: number;
 
@@ -57,9 +40,6 @@ export class FloatNullableFilter {
     type: Number,
   })
   @IsOptional()
-  @Field(() => Float, {
-    nullable: true,
-  })
   @Type(() => Number)
   lte?: number;
 
@@ -68,9 +48,6 @@ export class FloatNullableFilter {
     type: Number,
   })
   @IsOptional()
-  @Field(() => Float, {
-    nullable: true,
-  })
   @Type(() => Number)
   gt?: number;
 
@@ -79,9 +56,6 @@ export class FloatNullableFilter {
     type: Number,
   })
   @IsOptional()
-  @Field(() => Float, {
-    nullable: true,
-  })
   @Type(() => Number)
   gte?: number;
 
@@ -90,9 +64,6 @@ export class FloatNullableFilter {
     type: Number,
   })
   @IsOptional()
-  @Field(() => Float, {
-    nullable: true,
-  })
   @Type(() => Number)
   not?: number;
 }

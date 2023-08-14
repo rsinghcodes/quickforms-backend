@@ -1,10 +1,11 @@
-import { Module } from "@nestjs/common";
-import { AnswerModuleBase } from "./base/answer.module.base";
-import { AnswerService } from "./answer.service";
-import { AnswerController } from "./answer.controller";
+import { Module, forwardRef } from '@nestjs/common';
+import { AuthModule } from '../auth/auth.module';
+import { AnswerController } from './answer.controller';
+import { AnswerService } from './answer.service';
+import { AnswerModuleBase } from './base/answer.module.base';
 
 @Module({
-  imports: [AnswerModuleBase],
+  imports: [AnswerModuleBase, forwardRef(() => AuthModule)],
   controllers: [AnswerController],
   providers: [AnswerService],
   exports: [AnswerService],

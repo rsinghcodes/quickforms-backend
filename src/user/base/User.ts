@@ -1,8 +1,9 @@
 import { IsJSONValue } from '@app/custom-validators';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { JsonValue } from 'type-fest';
+import { Submission } from '../../submission/base/Submission';
 
 class User {
   @ApiProperty({
@@ -40,6 +41,15 @@ class User {
   })
   @IsJSONValue()
   roles!: JsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Submission],
+  })
+  @ValidateNested()
+  @Type(() => Submission)
+  @IsOptional()
+  submissions?: Array<Submission>;
 
   @ApiProperty({
     required: true,

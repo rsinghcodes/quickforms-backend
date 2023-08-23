@@ -1,7 +1,9 @@
 import { IsJSONValue } from '@app/custom-validators';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsOptional, IsString, ValidateNested } from 'class-validator';
 import { InputJsonValue } from '../../types';
+import { SubmissionCreateNestedManyWithoutUsersInput } from './SubmissionCreateNestedManyWithoutUsersInput';
 
 class UserCreateInput {
   @ApiProperty({
@@ -32,6 +34,15 @@ class UserCreateInput {
   })
   @IsJSONValue()
   roles!: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => SubmissionCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SubmissionCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  submissions?: SubmissionCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,

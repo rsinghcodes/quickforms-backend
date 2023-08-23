@@ -31,12 +31,12 @@ model Form {
 
 model Question {
   answers         Answer[]
-  dropdownOptions String?
+  dropdownOptions String[]
   form            Form                     @relation(fields: [formId], references: [id])
   formId          String                   @unique
   id              String                   @id @default(cuid())
   label           String
-  options         String?
+  options         String[]
   questionType    EnumQuestionQuestionType
 }
 

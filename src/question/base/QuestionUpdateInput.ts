@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { FormWhereUniqueInput } from '../../form/base/FormWhereUniqueInput';
 import { AnswerUpdateManyWithoutQuestionsInput } from './AnswerUpdateManyWithoutQuestionsInput';
 import { EnumQuestionQuestionType } from './EnumQuestionQuestionType';
@@ -17,11 +17,11 @@ class QuestionUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => [String],
   })
-  @IsString()
+  @IsArray()
   @IsOptional()
-  dropdownOptions?: string | null;
+  dropdownOptions!: string[];
 
   @ApiProperty({
     required: false,
@@ -42,11 +42,11 @@ class QuestionUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: String,
+    type: () => [String],
   })
-  @IsString()
+  @IsArray()
   @IsOptional()
-  options?: string | null;
+  options!: string[];
 
   @ApiProperty({
     required: false,

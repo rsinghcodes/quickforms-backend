@@ -1,36 +1,32 @@
-import { Test, TestingModule } from "@nestjs/testing";
-// @ts-ignore
-// eslint-disable-next-line
-import { UserService } from "../user/user.service";
-import { AuthService } from "./auth.service";
-import { Credentials } from "./Credentials";
-import { PasswordService } from "./password.service";
-// @ts-ignore
-// eslint-disable-next-line
-import { TokenService } from "./token.service";
-import { VALID_ID } from "../tests/auth/constants";
+import { Test, TestingModule } from '@nestjs/testing';
+import { VALID_ID } from '../tests/auth/constants';
+import { UserService } from '../user/user.service';
+import { Credentials } from './Credentials';
+import { AuthService } from './auth.service';
+import { PasswordService } from './password.service';
+import { TokenService } from './token.service';
 
 const VALID_CREDENTIALS: Credentials = {
-  username: "Valid User",
-  password: "Valid User Password",
+  username: 'Valid User',
+  password: 'Valid User Password',
 };
 const INVALID_CREDENTIALS: Credentials = {
-  username: "Invalid User",
-  password: "Invalid User Password",
+  username: 'Invalid User',
+  password: 'Invalid User Password',
 };
 const USER: any = {
   ...VALID_CREDENTIALS,
   createdAt: new Date(),
-  firstName: "ofek",
+  firstName: 'ofek',
   id: VALID_ID,
-  lastName: "gabay",
-  roles: ["admin"],
+  lastName: 'gabay',
+  roles: ['admin'],
   updatedAt: new Date(),
 };
 
-const SIGN_TOKEN = "SIGN_TOKEN";
+const SIGN_TOKEN = 'SIGN_TOKEN';
 
-const userService = {
+const authEntityService = {
   findOne(args: { where: { username: string } }): any | null {
     if (args.where.username === VALID_CREDENTIALS.username) {
       return USER;
@@ -51,7 +47,7 @@ const tokenService = {
   },
 };
 
-describe("AuthService", () => {
+describe('AuthService', () => {
   //ARRANGE
   let service: AuthService;
   beforeEach(async () => {
@@ -59,7 +55,7 @@ describe("AuthService", () => {
       providers: [
         {
           provide: UserService,
-          useValue: userService,
+          useValue: authEntityService,
         },
         {
           provide: PasswordService,
@@ -76,17 +72,14 @@ describe("AuthService", () => {
     service = module.get<AuthService>(AuthService);
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe("Testing the authService.validateUser()", () => {
-    it("should validate a valid user", async () => {
+  describe('Testing the authService.validateUser()', () => {
+    it('should validate a valid user', async () => {
       await expect(
-        service.validateUser(
-          VALID_CREDENTIALS.username,
-          VALID_CREDENTIALS.password
-        )
+        service.validateUser(VALID_CREDENTIALS.username, VALID_CREDENTIALS.password)
       ).resolves.toEqual({
         username: USER.username,
         roles: USER.roles,
@@ -94,18 +87,15 @@ describe("AuthService", () => {
       });
     });
 
-    it("should not validate a invalid user", async () => {
+    it('should not validate a invalid user', async () => {
       await expect(
-        service.validateUser(
-          INVALID_CREDENTIALS.username,
-          INVALID_CREDENTIALS.password
-        )
+        service.validateUser(INVALID_CREDENTIALS.username, INVALID_CREDENTIALS.password)
       ).resolves.toBe(null);
     });
   });
 
-  describe("Testing the authService.login()", () => {
-    it("should return userInfo object for correct username and password", async () => {
+  describe('Testing the authService.login()', () => {
+    it('should return userInfo object for correct username and password', async () => {
       const loginResult = await service.login(VALID_CREDENTIALS);
       expect(loginResult).toEqual({
         username: USER.username,

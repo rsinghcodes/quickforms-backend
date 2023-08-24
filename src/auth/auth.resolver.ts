@@ -9,7 +9,7 @@ export class AuthResolver {
     return this.authService.login(args.credentials);
   }
 
-  async userInfo(@UserData() userInfo: UserInfo): Promise<UserInfo> {
-    return userInfo;
+  async userInfo(@UserData() entityInfo: UserInfo): Promise<UserInfo> {
+    return entityInfo;
   }
 }

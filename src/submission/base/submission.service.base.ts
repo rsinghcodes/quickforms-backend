@@ -44,19 +44,19 @@ export class SubmissionServiceBase {
       .answers(args);
   }
 
+  async getCreatedBy(parentId: string): Promise<User | null> {
+    return this.prisma.submission
+      .findUnique({
+        where: { id: parentId },
+      })
+      .createdBy();
+  }
+
   async getForm(parentId: string): Promise<Form | null> {
     return this.prisma.submission
       .findUnique({
         where: { id: parentId },
       })
       .form();
-  }
-
-  async getUser(parentId: string): Promise<User | null> {
-    return this.prisma.submission
-      .findUnique({
-        where: { id: parentId },
-      })
-      .user();
   }
 }

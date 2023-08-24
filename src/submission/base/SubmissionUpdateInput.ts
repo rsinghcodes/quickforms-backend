@@ -17,21 +17,21 @@ class SubmissionUpdateInput {
 
   @ApiProperty({
     required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  createdBy?: UserWhereUniqueInput;
+
+  @ApiProperty({
+    required: false,
     type: () => FormWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => FormWhereUniqueInput)
   @IsOptional()
   form?: FormWhereUniqueInput;
-
-  @ApiProperty({
-    required: false,
-    type: () => UserWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => UserWhereUniqueInput)
-  @IsOptional()
-  user?: UserWhereUniqueInput;
 }
 
 export { SubmissionUpdateInput as SubmissionUpdateInput };

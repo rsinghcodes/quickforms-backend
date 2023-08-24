@@ -1,48 +1,39 @@
-import { Test } from "@nestjs/testing";
-import {
-  INestApplication,
-  HttpStatus,
-  ExecutionContext,
-  CallHandler,
-} from "@nestjs/common";
-import request from "supertest";
-import { MorganModule } from "nest-morgan";
-import { ACGuard } from "nest-access-control";
-import { DefaultAuthGuard } from "../../auth/defaultAuth.guard";
-import { ACLModule } from "../../auth/acl.module";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { map } from "rxjs";
-import { QuestionController } from "../question.controller";
-import { QuestionService } from "../question.service";
+import { CallHandler, ExecutionContext, HttpStatus, INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import { ACGuard } from 'nest-access-control';
+import { MorganModule } from 'nest-morgan';
+import { map } from 'rxjs';
+import request from 'supertest';
+import { ACLModule } from '../../auth/acl.module';
+import { DefaultAuthGuard } from '../../auth/defaultAuth.guard';
+import { AclFilterResponseInterceptor } from '../../interceptors/aclFilterResponse.interceptor';
+import { AclValidateRequestInterceptor } from '../../interceptors/aclValidateRequest.interceptor';
+import { QuestionController } from '../question.controller';
+import { QuestionService } from '../question.service';
 
-const nonExistingId = "nonExistingId";
-const existingId = "existingId";
+const nonExistingId = 'nonExistingId';
+const existingId = 'existingId';
 const CREATE_INPUT = {
-  dropdownOptions: "exampleDropdownOptions",
-  id: "exampleId",
-  label: "exampleLabel",
-  options: "exampleOptions",
+  id: 'exampleId',
+  label: 'exampleLabel',
+  options: 'exampleOptions',
 };
 const CREATE_RESULT = {
-  dropdownOptions: "exampleDropdownOptions",
-  id: "exampleId",
-  label: "exampleLabel",
-  options: "exampleOptions",
+  id: 'exampleId',
+  label: 'exampleLabel',
+  options: 'exampleOptions',
 };
 const FIND_MANY_RESULT = [
   {
-    dropdownOptions: "exampleDropdownOptions",
-    id: "exampleId",
-    label: "exampleLabel",
-    options: "exampleOptions",
+    id: 'exampleId',
+    label: 'exampleLabel',
+    options: 'exampleOptions',
   },
 ];
 const FIND_ONE_RESULT = {
-  dropdownOptions: "exampleDropdownOptions",
-  id: "exampleId",
-  label: "exampleLabel",
-  options: "exampleOptions",
+  id: 'exampleId',
+  label: 'exampleLabel',
+  options: 'exampleOptions',
 };
 
 const service = {
@@ -65,7 +56,7 @@ const basicAuthGuard = {
     const argumentHost = context.switchToHttp();
     const request = argumentHost.getRequest();
     request.user = {
-      roles: ["user"],
+      roles: ['user'],
     };
     return true;
   },
@@ -92,7 +83,7 @@ const aclValidateRequestInterceptor = {
   },
 };
 
-describe("Question", () => {
+describe('Question', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -120,54 +111,50 @@ describe("Question", () => {
     await app.init();
   });
 
-  test("POST /questions", async () => {
+  test('POST /questions', async () => {
     await request(app.getHttpServer())
-      .post("/questions")
+      .post('/questions')
       .send(CREATE_INPUT)
       .expect(HttpStatus.CREATED)
       .expect(CREATE_RESULT);
   });
 
-  test("GET /questions", async () => {
+  test('GET /questions', async () => {
     await request(app.getHttpServer())
-      .get("/questions")
+      .get('/questions')
       .expect(HttpStatus.OK)
       .expect([FIND_MANY_RESULT[0]]);
   });
 
-  test("GET /questions/:id non existing", async () => {
+  test('GET /questions/:id non existing', async () => {
     await request(app.getHttpServer())
-      .get(`${"/questions"}/${nonExistingId}`)
+      .get(`${'/questions'}/${nonExistingId}`)
       .expect(HttpStatus.NOT_FOUND)
       .expect({
         statusCode: HttpStatus.NOT_FOUND,
-        message: `No resource was found for {"${"id"}":"${nonExistingId}"}`,
-        error: "Not Found",
+        message: `No resource was found for {"${'id'}":"${nonExistingId}"}`,
+        error: 'Not Found',
       });
   });
 
-  test("GET /questions/:id existing", async () => {
+  test('GET /questions/:id existing', async () => {
     await request(app.getHttpServer())
-      .get(`${"/questions"}/${existingId}`)
+      .get(`${'/questions'}/${existingId}`)
       .expect(HttpStatus.OK)
       .expect(FIND_ONE_RESULT);
   });
 
-  test("POST /questions existing resource", async () => {
+  test('POST /questions existing resource', async () => {
     let agent = request(app.getHttpServer());
     await agent
-      .post("/questions")
+      .post('/questions')
       .send(CREATE_INPUT)
       .expect(HttpStatus.CREATED)
       .expect(CREATE_RESULT)
       .then(function () {
-        agent
-          .post("/questions")
-          .send(CREATE_INPUT)
-          .expect(HttpStatus.CONFLICT)
-          .expect({
-            statusCode: HttpStatus.CONFLICT,
-          });
+        agent.post('/questions').send(CREATE_INPUT).expect(HttpStatus.CONFLICT).expect({
+          statusCode: HttpStatus.CONFLICT,
+        });
       });
   });
 

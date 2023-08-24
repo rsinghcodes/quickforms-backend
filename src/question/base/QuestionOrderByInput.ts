@@ -9,14 +9,6 @@ class QuestionOrderByInput {
   })
   @IsOptional()
   @IsEnum(SortOrder)
-  dropdownOptions?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ['asc', 'desc'],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
   formId?: SortOrder;
 
   @ApiProperty({

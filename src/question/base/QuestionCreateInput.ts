@@ -1,6 +1,8 @@
+import { IsJSONValue } from '@app/custom-validators';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { InputJsonValue } from 'src/types';
 import { FormWhereUniqueInput } from '../../form/base/FormWhereUniqueInput';
 import { AnswerCreateNestedManyWithoutQuestionsInput } from './AnswerCreateNestedManyWithoutQuestionsInput';
 import { EnumQuestionQuestionType } from './EnumQuestionQuestionType';
@@ -14,14 +16,6 @@ class QuestionCreateInput {
   @Type(() => AnswerCreateNestedManyWithoutQuestionsInput)
   @IsOptional()
   answers?: AnswerCreateNestedManyWithoutQuestionsInput;
-
-  @ApiProperty({
-    required: false,
-    type: () => [String],
-  })
-  @IsArray()
-  @IsOptional()
-  dropdownOptions!: string[];
 
   @ApiProperty({
     required: true,
@@ -40,11 +34,10 @@ class QuestionCreateInput {
 
   @ApiProperty({
     required: false,
-    type: () => [String],
   })
-  @IsArray()
+  @IsJSONValue()
   @IsOptional()
-  options!: string[];
+  options?: InputJsonValue;
 
   @ApiProperty({
     required: true,

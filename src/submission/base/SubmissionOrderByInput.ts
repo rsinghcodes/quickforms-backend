@@ -17,6 +17,14 @@ class SubmissionOrderByInput {
   })
   @IsOptional()
   @IsEnum(SortOrder)
+  createdById?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ['asc', 'desc'],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
   formId?: SortOrder;
 
   @ApiProperty({
@@ -26,14 +34,6 @@ class SubmissionOrderByInput {
   @IsOptional()
   @IsEnum(SortOrder)
   id?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ['asc', 'desc'],
-  })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  userId?: SortOrder;
 }
 
 export { SubmissionOrderByInput as SubmissionOrderByInput };

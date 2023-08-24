@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsDate, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Question } from '../../question/base/Question';
 import { Submission } from '../../submission/base/Submission';
+import { User } from '../../user/base/User';
 
 class Form {
   @ApiProperty({
@@ -11,6 +12,14 @@ class Form {
   @IsDate()
   @Type(() => Date)
   createdAt!: Date;
+
+  @ApiProperty({
+    required: true,
+    type: () => User,
+  })
+  @ValidateNested()
+  @Type(() => User)
+  createdBy?: User;
 
   @ApiProperty({
     required: false,

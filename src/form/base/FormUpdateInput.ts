@@ -1,10 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { UserWhereUniqueInput } from '../../user/base/UserWhereUniqueInput';
 import { QuestionUpdateManyWithoutFormsInput } from './QuestionUpdateManyWithoutFormsInput';
 import { SubmissionUpdateManyWithoutFormsInput } from './SubmissionUpdateManyWithoutFormsInput';
 
 class FormUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  @IsOptional()
+  createdBy?: UserWhereUniqueInput;
+
   @ApiProperty({
     required: false,
     type: String,

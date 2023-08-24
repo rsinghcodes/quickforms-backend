@@ -1,60 +1,55 @@
-import { Test } from "@nestjs/testing";
-import {
-  INestApplication,
-  HttpStatus,
-  ExecutionContext,
-  CallHandler,
-} from "@nestjs/common";
-import request from "supertest";
-import { MorganModule } from "nest-morgan";
-import { ACGuard } from "nest-access-control";
-import { DefaultAuthGuard } from "../../auth/defaultAuth.guard";
-import { ACLModule } from "../../auth/acl.module";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { map } from "rxjs";
-import { UserController } from "../user.controller";
-import { UserService } from "../user.service";
+import { CallHandler, ExecutionContext, HttpStatus, INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import { ACGuard } from 'nest-access-control';
+import { MorganModule } from 'nest-morgan';
+import { map } from 'rxjs';
+import request from 'supertest';
+import { ACLModule } from '../../auth/acl.module';
+import { DefaultAuthGuard } from '../../auth/defaultAuth.guard';
+import { AclFilterResponseInterceptor } from '../../interceptors/aclFilterResponse.interceptor';
+import { AclValidateRequestInterceptor } from '../../interceptors/aclValidateRequest.interceptor';
+import { UserController } from '../user.controller';
+import { UserService } from '../user.service';
 
-const nonExistingId = "nonExistingId";
-const existingId = "existingId";
+const nonExistingId = 'nonExistingId';
+const existingId = 'existingId';
 const CREATE_INPUT = {
   createdAt: new Date(),
-  firstName: "exampleFirstName",
-  id: "exampleId",
-  lastName: "exampleLastName",
-  password: "examplePassword",
+  firstName: 'exampleFirstName',
+  id: 'exampleId',
+  lastName: 'exampleLastName',
+  password: 'examplePassword',
   updatedAt: new Date(),
-  username: "exampleUsername",
+  username: 'exampleUsername',
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
-  firstName: "exampleFirstName",
-  id: "exampleId",
-  lastName: "exampleLastName",
-  password: "examplePassword",
+  firstName: 'exampleFirstName',
+  id: 'exampleId',
+  lastName: 'exampleLastName',
+  password: 'examplePassword',
   updatedAt: new Date(),
-  username: "exampleUsername",
+  username: 'exampleUsername',
 };
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
-    firstName: "exampleFirstName",
-    id: "exampleId",
-    lastName: "exampleLastName",
-    password: "examplePassword",
+    firstName: 'exampleFirstName',
+    id: 'exampleId',
+    lastName: 'exampleLastName',
+    password: 'examplePassword',
     updatedAt: new Date(),
-    username: "exampleUsername",
+    username: 'exampleUsername',
   },
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
-  firstName: "exampleFirstName",
-  id: "exampleId",
-  lastName: "exampleLastName",
-  password: "examplePassword",
+  firstName: 'exampleFirstName',
+  id: 'exampleId',
+  lastName: 'exampleLastName',
+  password: 'examplePassword',
   updatedAt: new Date(),
-  username: "exampleUsername",
+  username: 'exampleUsername',
 };
 
 const service = {
@@ -77,7 +72,7 @@ const basicAuthGuard = {
     const argumentHost = context.switchToHttp();
     const request = argumentHost.getRequest();
     request.user = {
-      roles: ["user"],
+      roles: ['user'],
     };
     return true;
   },
@@ -104,7 +99,7 @@ const aclValidateRequestInterceptor = {
   },
 };
 
-describe("User", () => {
+describe('User', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -132,9 +127,9 @@ describe("User", () => {
     await app.init();
   });
 
-  test("POST /users", async () => {
+  test('POST /users', async () => {
     await request(app.getHttpServer())
-      .post("/users")
+      .post('/users')
       .send(CREATE_INPUT)
       .expect(HttpStatus.CREATED)
       .expect({
@@ -144,9 +139,9 @@ describe("User", () => {
       });
   });
 
-  test("GET /users", async () => {
+  test('GET /users', async () => {
     await request(app.getHttpServer())
-      .get("/users")
+      .get('/users')
       .expect(HttpStatus.OK)
       .expect([
         {
@@ -157,20 +152,20 @@ describe("User", () => {
       ]);
   });
 
-  test("GET /users/:id non existing", async () => {
+  test('GET /users/:id non existing', async () => {
     await request(app.getHttpServer())
-      .get(`${"/users"}/${nonExistingId}`)
+      .get(`${'/users'}/${nonExistingId}`)
       .expect(HttpStatus.NOT_FOUND)
       .expect({
         statusCode: HttpStatus.NOT_FOUND,
-        message: `No resource was found for {"${"id"}":"${nonExistingId}"}`,
-        error: "Not Found",
+        message: `No resource was found for {"${'id'}":"${nonExistingId}"}`,
+        error: 'Not Found',
       });
   });
 
-  test("GET /users/:id existing", async () => {
+  test('GET /users/:id existing', async () => {
     await request(app.getHttpServer())
-      .get(`${"/users"}/${existingId}`)
+      .get(`${'/users'}/${existingId}`)
       .expect(HttpStatus.OK)
       .expect({
         ...FIND_ONE_RESULT,
@@ -179,10 +174,10 @@ describe("User", () => {
       });
   });
 
-  test("POST /users existing resource", async () => {
+  test('POST /users existing resource', async () => {
     let agent = request(app.getHttpServer());
     await agent
-      .post("/users")
+      .post('/users')
       .send(CREATE_INPUT)
       .expect(HttpStatus.CREATED)
       .expect({
@@ -191,13 +186,9 @@ describe("User", () => {
         updatedAt: CREATE_RESULT.updatedAt.toISOString(),
       })
       .then(function () {
-        agent
-          .post("/users")
-          .send(CREATE_INPUT)
-          .expect(HttpStatus.CONFLICT)
-          .expect({
-            statusCode: HttpStatus.CONFLICT,
-          });
+        agent.post('/users').send(CREATE_INPUT).expect(HttpStatus.CONFLICT).expect({
+          statusCode: HttpStatus.CONFLICT,
+        });
       });
   });
 

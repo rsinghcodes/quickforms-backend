@@ -48,8 +48,6 @@ export class QuestionControllerBase {
         },
       },
       select: {
-        dropdownOptions: true,
-
         form: {
           select: {
             id: true,
@@ -81,8 +79,6 @@ export class QuestionControllerBase {
     return this.service.findMany({
       ...args,
       select: {
-        dropdownOptions: true,
-
         form: {
           select: {
             id: true,
@@ -108,8 +104,6 @@ export class QuestionControllerBase {
     const result = await this.service.findOne({
       where: params,
       select: {
-        dropdownOptions: true,
-
         form: {
           select: {
             id: true,
@@ -155,8 +149,6 @@ export class QuestionControllerBase {
           },
         },
         select: {
-          dropdownOptions: true,
-
           form: {
             select: {
               id: true,
@@ -193,8 +185,6 @@ export class QuestionControllerBase {
       return await this.service.delete({
         where: params,
         select: {
-          dropdownOptions: true,
-
           form: {
             select: {
               id: true,

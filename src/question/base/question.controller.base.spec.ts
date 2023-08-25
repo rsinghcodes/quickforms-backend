@@ -16,24 +16,20 @@ const existingId = 'existingId';
 const CREATE_INPUT = {
   id: 'exampleId',
   label: 'exampleLabel',
-  options: 'exampleOptions',
 };
 const CREATE_RESULT = {
   id: 'exampleId',
   label: 'exampleLabel',
-  options: 'exampleOptions',
 };
 const FIND_MANY_RESULT = [
   {
     id: 'exampleId',
     label: 'exampleLabel',
-    options: 'exampleOptions',
   },
 ];
 const FIND_ONE_RESULT = {
   id: 'exampleId',
   label: 'exampleLabel',
-  options: 'exampleOptions',
 };
 
 const service = {

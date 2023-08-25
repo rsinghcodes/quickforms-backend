@@ -21,7 +21,7 @@ class AnswerUpdateInput {
   @ValidateNested()
   @Type(() => SubmissionWhereUniqueInput)
   @IsOptional()
-  submission?: SubmissionWhereUniqueInput | null;
+  submission?: SubmissionWhereUniqueInput;
 
   @ApiProperty({
     required: false,

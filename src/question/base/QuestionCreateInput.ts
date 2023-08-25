@@ -2,8 +2,8 @@ import { IsJSONValue } from '@app/custom-validators';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { InputJsonValue } from 'src/types';
 import { FormWhereUniqueInput } from '../../form/base/FormWhereUniqueInput';
+import { InputJsonValue } from '../../types';
 import { AnswerCreateNestedManyWithoutQuestionsInput } from './AnswerCreateNestedManyWithoutQuestionsInput';
 import { EnumQuestionQuestionType } from './EnumQuestionQuestionType';
 

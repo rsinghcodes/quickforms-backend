@@ -23,7 +23,7 @@ model User {
 model Form {
   createdAt   DateTime     @default(now())
   createdBy   User         @relation(fields: [createdById], references: [id])
-  createdById String       @unique
+  createdById String
   description String?
   id          String       @id @default(cuid())
   questions   Question[]
@@ -35,7 +35,7 @@ model Form {
 model Question {
   answers      Answer[]
   form         Form                     @relation(fields: [formId], references: [id])
-  formId       String                   @unique
+  formId       String
   id           String                   @id @default(cuid())
   label        String
   options      Json?
@@ -46,19 +46,19 @@ model Submission {
   answers     Answer[]
   createdAt   DateTime @default(now())
   createdBy   User     @relation(fields: [createdById], references: [id])
-  createdById String   @unique
+  createdById String
   form        Form     @relation(fields: [formId], references: [id])
-  formId      String   @unique
+  formId      String
   id          String   @id @default(cuid())
 }
 
 model Answer {
-  id           String      @id @default(cuid())
-  question     Question    @relation(fields: [questionId], references: [id])
-  questionId   String      @unique
-  submission   Submission? @relation(fields: [submissionId], references: [id])
-  submissionId String?
-  value        String      @unique
+  id           String     @id @default(cuid())
+  question     Question   @relation(fields: [questionId], references: [id])
+  questionId   String
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  submissionId String
+  value        String
 }
 
 enum EnumQuestionQuestionType {

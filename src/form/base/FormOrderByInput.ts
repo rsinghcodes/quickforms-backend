@@ -17,6 +17,14 @@ class FormOrderByInput {
   })
   @IsOptional()
   @IsEnum(SortOrder)
+  createdById?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ['asc', 'desc'],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
   description?: SortOrder;
 
   @ApiProperty({

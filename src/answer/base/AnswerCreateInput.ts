@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsString, ValidateNested } from 'class-validator';
 import { QuestionWhereUniqueInput } from '../../question/base/QuestionWhereUniqueInput';
 import { SubmissionWhereUniqueInput } from '../../submission/base/SubmissionWhereUniqueInput';
 
@@ -14,13 +14,12 @@ class AnswerCreateInput {
   question!: QuestionWhereUniqueInput;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => SubmissionWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => SubmissionWhereUniqueInput)
-  @IsOptional()
-  submission?: SubmissionWhereUniqueInput | null;
+  submission!: SubmissionWhereUniqueInput;
 
   @ApiProperty({
     required: true,

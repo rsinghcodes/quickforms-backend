@@ -17,19 +17,19 @@ class SubmissionCreateInput {
 
   @ApiProperty({
     required: true,
+    type: () => UserWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => UserWhereUniqueInput)
+  createdBy!: UserWhereUniqueInput;
+
+  @ApiProperty({
+    required: true,
     type: () => FormWhereUniqueInput,
   })
   @ValidateNested()
   @Type(() => FormWhereUniqueInput)
   form!: FormWhereUniqueInput;
-
-  @ApiProperty({
-    required: true,
-    type: () => UserWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => UserWhereUniqueInput)
-  user!: UserWhereUniqueInput;
 }
 
 export { SubmissionCreateInput as SubmissionCreateInput };

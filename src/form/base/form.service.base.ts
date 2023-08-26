@@ -1,4 +1,4 @@
-import { Form, Prisma, Question, Submission } from '@prisma/client';
+import { Form, Prisma, Question, Submission, User } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 
 export class FormServiceBase {
@@ -53,5 +53,13 @@ export class FormServiceBase {
         where: { id: parentId },
       })
       .submissions(args);
+  }
+
+  async getCreatedBy(parentId: string): Promise<User | null> {
+    return this.prisma.form
+      .findUnique({
+        where: { id: parentId },
+      })
+      .createdBy();
   }
 }

@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsOptional, IsString, ValidateNested } from 'class-validator';
 import { InputJsonValue } from '../../types';
+import { FormCreateNestedManyWithoutUsersInput } from './FormCreateNestedManyWithoutUsersInput';
 import { SubmissionCreateNestedManyWithoutUsersInput } from './SubmissionCreateNestedManyWithoutUsersInput';
 
 class UserCreateInput {
@@ -13,6 +14,15 @@ class UserCreateInput {
   @IsString()
   @IsOptional()
   firstName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => FormCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => FormCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  forms?: FormCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,

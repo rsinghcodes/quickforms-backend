@@ -42,16 +42,22 @@ export class SubmissionControllerBase {
       data: {
         ...data,
 
-        form: {
-          connect: data.form,
+        createdBy: {
+          connect: data.createdBy,
         },
 
-        user: {
-          connect: data.user,
+        form: {
+          connect: data.form,
         },
       },
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
 
         form: {
           select: {
@@ -60,12 +66,6 @@ export class SubmissionControllerBase {
         },
 
         id: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
   }
@@ -89,6 +89,12 @@ export class SubmissionControllerBase {
       select: {
         createdAt: true,
 
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         form: {
           select: {
             id: true,
@@ -96,12 +102,6 @@ export class SubmissionControllerBase {
         },
 
         id: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
   }
@@ -124,6 +124,12 @@ export class SubmissionControllerBase {
       select: {
         createdAt: true,
 
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         form: {
           select: {
             id: true,
@@ -131,12 +137,6 @@ export class SubmissionControllerBase {
         },
 
         id: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (result === null) {
@@ -167,16 +167,22 @@ export class SubmissionControllerBase {
         data: {
           ...data,
 
-          form: {
-            connect: data.form,
+          createdBy: {
+            connect: data.createdBy,
           },
 
-          user: {
-            connect: data.user,
+          form: {
+            connect: data.form,
           },
         },
         select: {
           createdAt: true,
+
+          createdBy: {
+            select: {
+              id: true,
+            },
+          },
 
           form: {
             select: {
@@ -185,12 +191,6 @@ export class SubmissionControllerBase {
           },
 
           id: true,
-
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
     } catch (error: any) {
@@ -219,6 +219,12 @@ export class SubmissionControllerBase {
         select: {
           createdAt: true,
 
+          createdBy: {
+            select: {
+              id: true,
+            },
+          },
+
           form: {
             select: {
               id: true,
@@ -226,12 +232,6 @@ export class SubmissionControllerBase {
           },
 
           id: true,
-
-          user: {
-            select: {
-              id: true,
-            },
-          },
         },
       });
     } catch (error: any) {

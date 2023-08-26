@@ -1,40 +1,35 @@
-import { Test } from "@nestjs/testing";
-import {
-  INestApplication,
-  HttpStatus,
-  ExecutionContext,
-  CallHandler,
-} from "@nestjs/common";
-import request from "supertest";
-import { MorganModule } from "nest-morgan";
-import { ACGuard } from "nest-access-control";
-import { DefaultAuthGuard } from "../../auth/defaultAuth.guard";
-import { ACLModule } from "../../auth/acl.module";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { map } from "rxjs";
-import { SubmissionController } from "../submission.controller";
-import { SubmissionService } from "../submission.service";
+import { CallHandler, ExecutionContext, HttpStatus, INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import { ACGuard } from 'nest-access-control';
+import { MorganModule } from 'nest-morgan';
+import { map } from 'rxjs';
+import request from 'supertest';
+import { ACLModule } from '../../auth/acl.module';
+import { DefaultAuthGuard } from '../../auth/defaultAuth.guard';
+import { AclFilterResponseInterceptor } from '../../interceptors/aclFilterResponse.interceptor';
+import { AclValidateRequestInterceptor } from '../../interceptors/aclValidateRequest.interceptor';
+import { SubmissionController } from '../submission.controller';
+import { SubmissionService } from '../submission.service';
 
-const nonExistingId = "nonExistingId";
-const existingId = "existingId";
+const nonExistingId = 'nonExistingId';
+const existingId = 'existingId';
 const CREATE_INPUT = {
   createdAt: new Date(),
-  id: "exampleId",
+  id: 'exampleId',
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
-  id: "exampleId",
+  id: 'exampleId',
 };
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
-    id: "exampleId",
+    id: 'exampleId',
   },
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
-  id: "exampleId",
+  id: 'exampleId',
 };
 
 const service = {
@@ -57,7 +52,7 @@ const basicAuthGuard = {
     const argumentHost = context.switchToHttp();
     const request = argumentHost.getRequest();
     request.user = {
-      roles: ["user"],
+      roles: ['user'],
     };
     return true;
   },
@@ -84,7 +79,7 @@ const aclValidateRequestInterceptor = {
   },
 };
 
-describe("Submission", () => {
+describe('Submission', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -112,9 +107,9 @@ describe("Submission", () => {
     await app.init();
   });
 
-  test("POST /submissions", async () => {
+  test('POST /submissions', async () => {
     await request(app.getHttpServer())
-      .post("/submissions")
+      .post('/submissions')
       .send(CREATE_INPUT)
       .expect(HttpStatus.CREATED)
       .expect({
@@ -123,9 +118,9 @@ describe("Submission", () => {
       });
   });
 
-  test("GET /submissions", async () => {
+  test('GET /submissions', async () => {
     await request(app.getHttpServer())
-      .get("/submissions")
+      .get('/submissions')
       .expect(HttpStatus.OK)
       .expect([
         {
@@ -135,20 +130,20 @@ describe("Submission", () => {
       ]);
   });
 
-  test("GET /submissions/:id non existing", async () => {
+  test('GET /submissions/:id non existing', async () => {
     await request(app.getHttpServer())
-      .get(`${"/submissions"}/${nonExistingId}`)
+      .get(`${'/submissions'}/${nonExistingId}`)
       .expect(HttpStatus.NOT_FOUND)
       .expect({
         statusCode: HttpStatus.NOT_FOUND,
-        message: `No resource was found for {"${"id"}":"${nonExistingId}"}`,
-        error: "Not Found",
+        message: `No resource was found for {"${'id'}":"${nonExistingId}"}`,
+        error: 'Not Found',
       });
   });
 
-  test("GET /submissions/:id existing", async () => {
+  test('GET /submissions/:id existing', async () => {
     await request(app.getHttpServer())
-      .get(`${"/submissions"}/${existingId}`)
+      .get(`${'/submissions'}/${existingId}`)
       .expect(HttpStatus.OK)
       .expect({
         ...FIND_ONE_RESULT,
@@ -156,10 +151,10 @@ describe("Submission", () => {
       });
   });
 
-  test("POST /submissions existing resource", async () => {
+  test('POST /submissions existing resource', async () => {
     let agent = request(app.getHttpServer());
     await agent
-      .post("/submissions")
+      .post('/submissions')
       .send(CREATE_INPUT)
       .expect(HttpStatus.CREATED)
       .expect({
@@ -167,13 +162,9 @@ describe("Submission", () => {
         createdAt: CREATE_RESULT.createdAt.toISOString(),
       })
       .then(function () {
-        agent
-          .post("/submissions")
-          .send(CREATE_INPUT)
-          .expect(HttpStatus.CONFLICT)
-          .expect({
-            statusCode: HttpStatus.CONFLICT,
-          });
+        agent.post('/submissions').send(CREATE_INPUT).expect(HttpStatus.CONFLICT).expect({
+          statusCode: HttpStatus.CONFLICT,
+        });
       });
   });
 

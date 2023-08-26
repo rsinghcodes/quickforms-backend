@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsDate, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { JsonValue } from 'type-fest';
+import { Form } from '../../form/base/Form';
 import { Submission } from '../../submission/base/Submission';
 
 class User {
@@ -20,6 +21,15 @@ class User {
   @IsString()
   @IsOptional()
   firstName!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Form],
+  })
+  @ValidateNested()
+  @Type(() => Form)
+  @IsOptional()
+  forms?: Array<Form>;
 
   @ApiProperty({
     required: true,

@@ -43,9 +43,22 @@ export class FormControllerBase {
   })
   async create(@common.Body() data: FormCreateInput): Promise<Form> {
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        createdBy: {
+          connect: data.createdBy,
+        },
+      },
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
         title: true,
@@ -72,6 +85,13 @@ export class FormControllerBase {
       ...args,
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
         title: true,
@@ -92,6 +112,13 @@ export class FormControllerBase {
       where: params,
       select: {
         createdAt: true,
+
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         description: true,
         id: true,
         title: true,
@@ -123,9 +150,22 @@ export class FormControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          createdBy: {
+            connect: data.createdBy,
+          },
+        },
         select: {
           createdAt: true,
+
+          createdBy: {
+            select: {
+              id: true,
+            },
+          },
+
           description: true,
           id: true,
           title: true,
@@ -157,6 +197,13 @@ export class FormControllerBase {
         where: params,
         select: {
           createdAt: true,
+
+          createdBy: {
+            select: {
+              id: true,
+            },
+          },
+
           description: true,
           id: true,
           title: true,
@@ -187,8 +234,6 @@ export class FormControllerBase {
     const results = await this.service.findQuestions(params.id, {
       ...query,
       select: {
-        dropdownOptions: true,
-
         form: {
           select: {
             id: true,
@@ -291,6 +336,12 @@ export class FormControllerBase {
       select: {
         createdAt: true,
 
+        createdBy: {
+          select: {
+            id: true,
+          },
+        },
+
         form: {
           select: {
             id: true,
@@ -298,12 +349,6 @@ export class FormControllerBase {
         },
 
         id: true,
-
-        user: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (results === null) {

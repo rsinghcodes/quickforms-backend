@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsString, ValidateNested } from 'class-validator';
 import { Question } from '../../question/base/Question';
 import { Submission } from '../../submission/base/Submission';
 
@@ -21,13 +21,12 @@ class Answer {
   question?: Question;
 
   @ApiProperty({
-    required: false,
+    required: true,
     type: () => Submission,
   })
   @ValidateNested()
   @Type(() => Submission)
-  @IsOptional()
-  submission?: Submission | null;
+  submission?: Submission;
 
   @ApiProperty({
     required: true,

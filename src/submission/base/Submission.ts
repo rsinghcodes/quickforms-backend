@@ -24,6 +24,14 @@ class Submission {
 
   @ApiProperty({
     required: true,
+    type: () => User,
+  })
+  @ValidateNested()
+  @Type(() => User)
+  createdBy?: User;
+
+  @ApiProperty({
+    required: true,
     type: () => Form,
   })
   @ValidateNested()
@@ -36,14 +44,6 @@ class Submission {
   })
   @IsString()
   id!: string;
-
-  @ApiProperty({
-    required: true,
-    type: () => User,
-  })
-  @ValidateNested()
-  @Type(() => User)
-  user?: User;
 }
 
 export { Submission as Submission };

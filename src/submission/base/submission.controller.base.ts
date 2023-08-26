@@ -136,6 +136,7 @@ export class SubmissionControllerBase {
           },
         },
 
+        answers: true,
         id: true,
       },
     });

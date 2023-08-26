@@ -119,6 +119,7 @@ export class FormControllerBase {
           },
         },
 
+        questions: true,
         description: true,
         id: true,
         title: true,

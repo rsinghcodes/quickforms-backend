@@ -314,6 +314,8 @@ export class UserControllerBase {
         form: {
           select: {
             id: true,
+            title: true,
+            description: true,
           },
         },
 
